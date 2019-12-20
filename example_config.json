@@ -1,0 +1,23 @@
+{
+    "boxes": [
+        {
+            "name": "test",
+            "server": "https://box.example.org",
+            "username": "testUser",
+            "password": "SuperSecret"
+        }
+    ],
+    "users": [
+        {
+            "box": "test",
+            "username": "user1",
+            "password": "pwd1",
+            "allow_ip4": true,
+            "allow_ip6": false,
+            "allowed_domains": [
+                "www\\.example\\.org",
+                ".*\\.?user1\\.example\\.org"
+            ]
+        }
+    ]
+}
