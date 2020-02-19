@@ -14,7 +14,6 @@ ENV ASSET_NAME="miabdns_linux-amd64.tar.gz"
 ENV AUTH="Authorization: token $TOKEN"
 ENV USERAGENT="User-Agent: rverst/miabdns ($VERSION)"
 
-
 RUN apk add --update --no-cache jq curl ca-certificates && \
     mkdir -p /miabdns
 
@@ -28,10 +27,9 @@ RUN curl -o /dev/null -s -H "$AUTH" -H "$USERAGENT" $GH_REPO || exit 99 && \
 
 WORKDIR /miabdns
 
-VOLUME /config
 EXPOSE 8080/tcp
 
-ENV MIABDNS_CONFIG=/config/config.json
+ENV MIABDNS_CONFIG=/miabdns/config.json
 ENV MIABDNS_PORT=8080
 ENV MIABDNS_BIND=0.0.0.0
 
