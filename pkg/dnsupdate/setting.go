@@ -92,7 +92,7 @@ func CheckRequest(c config.AppConfig, r *http.Request, allowedMethods []string) 
 		}
 	}
 
-		username, password, ok := r.BasicAuth()
+	username, password, ok := r.BasicAuth()
 	if !ok {
 		return nil, nil, models.NewError(http.StatusUnauthorized, errors.New("no basic auth header"), true)
 	}
