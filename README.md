@@ -15,12 +15,12 @@ miabdns is a simple server to implement a dynamic dns service for
 
 * Download a binary release from the [release page](https://github.com/rverst/miabdns/releases).
 
-* ~~Run the docker container from [docker hub](https://hub.docker.com/)~~ 
+* Run the docker container from [docker hub](https://hub.docker.com/repository/docker/rverst/miabdns/).
 
 ## Usage (to be continued...)
 
-You need a configuration file, which provides credentials for your Mail-in-a-Box
-instance(s) and a list of users that are allowed to use the service:
+You need a configuration file (only json is supported at the moment), which provides credentials for
+your Mail-in-a-Box instance(s) and a list of users that are allowed to use the service:
 
 ```json
     {"boxes": [
