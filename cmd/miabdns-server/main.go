@@ -10,13 +10,12 @@ import (
 	"net/http"
 	"os"
 	"strconv"
-	"time"
 )
 
 var (
-	Version    = "0.0.0"
+	Version    = ""
 	CommitHash = ""
-	BuildDate  = time.Now().UTC().Format("2006-01-02 15:04:05")
+	BuildDate  = ""
 
 	flPort   uint16 = 8080
 	flBind          = "0.0.0.0"
@@ -26,7 +25,11 @@ var (
 func init() {
 	flaggy.SetName("miabdns")
 	flaggy.SetDescription("miabdns - super simple dynamic DNS service for Mail-in-a-Box")
-	flaggy.SetVersion(fmt.Sprintf("%s - %s (%s)", Version, CommitHash, BuildDate))
+
+	// check make sense because `Version` is set via ldflags during build
+	if Version != "" {
+		flaggy.SetVersion(fmt.Sprintf("%s - %s (%s)", Version, CommitHash, BuildDate))
+	}
 
 	flaggy.String(&flConfig, "c", "config", "path to the configuration file (default \"config.json\")")
 	flaggy.String(&flBind, "b", "bind", "interface to which the server will bind (default \"0.0.0.0\")")
@@ -56,8 +59,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	fmt.Printf("cfg: %+v\n\n", cfg)
-
 	mux := http.NewServeMux()
 	mux.Handle("/health/", health.New())
 	mux.Handle("/dnsupdate/fritz/", fritzbox.New(cfg))
@@ -73,6 +74,9 @@ func main() {
 		fmt.Printf("error creating listener: %v", err)
 		os.Exit(1)
 	}
+
+	fmt.Println("----------------------")
+	fmt.Printf("miabdns-server v%s\n", Version)
 	fmt.Printf("listening on: %s\n", address)
 
 	defer func() {

@@ -20,7 +20,15 @@ func New(config config.AppConfig) *Handler {
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
-	fmt.Printf("fritzbox - new request from %s\n", r.RemoteAddr)
+	ip := r.Header.Get("X-Forwarded-For")
+	if ip == "" {
+		ip = r.Header.Get("X-Real-IP")
+	}
+	if ip == "" {
+		ip = r.RemoteAddr
+	}
+	fmt.Printf("fritzbox - new request from %s\n", ip)
+
 	mc, uc, error := dnsupdate.CheckRequest(h.config, r, []string{http.MethodGet})
 	if error != nil {
 		fmt.Println(fmt.Errorf("fritzbox - error in config.CheckRequest: %s (%d)", error.Err.Error(), error.Status))
